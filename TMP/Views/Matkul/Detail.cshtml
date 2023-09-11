@@ -1,0 +1,44 @@
+﻿@model TMP.Models.MatkulModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_DashboardAdmin.cshtml";
+}
+
+<div class="card-body pt-0 p-0">
+    <h4 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif; text-transform: uppercase;"> DETAIL MATA KULIAH | PROGRAM STUDI @Html.DisplayFor(model => model.prodinama)</h4>
+
+    <a href="@Url.Action("Index", "Matkul")">
+        <i class="fa fa-chevron-circle-left"></i> Kembali
+    </a>
+    <hr />
+
+    <ul class="list-group">
+    <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+        
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.Label("Mata Kuliah", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    </div>
+                    <div class="col-md-8">
+                        : @Html.DisplayFor(model => model.nama_matkul, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.Label("Dosen Pengampu", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    </div>
+                    <div class="col-md-8">
+                        : @Html.DisplayFor(model => model.dosen_pengampu, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+                    </div>
+                </div>
+
+            </div>
+       
+    </li>
+
+
+</ul>
+</div>

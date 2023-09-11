@@ -1,0 +1,73 @@
+﻿@model IEnumerable<TMP.Models.MatkulModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashboardAdmin.cshtml";
+    int no = 0;
+}
+
+<h4 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">MATA KULIAH</h4>
+
+<div class="card-header pb-0">
+    <div class="text-lg-end my-1 my-lg-0">
+        @Html.ActionLink("Tambah Data", "Create", null, new { @class = "btn btn-primary  btn-sm", style = "font-size: 17px;; font-family: Arial;" })
+    </div>
+</div><!-- end col-->
+
+<table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 13px;">
+    <thead>
+        <tr>
+            <th style="width:8%; text-align: center;">
+                <strong>@Html.DisplayName("No")</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayName("Program Studi")</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayName("Nama Mata Kuliah")</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayName("Dosen Pengampu")</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayName("Status")</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>Aksi</strong>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @(no += 1)
+                </td>
+                <td style="text-align: center;"> 
+                    @Html.DisplayFor(modelItem => item.prodinama)
+                </td>
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.nama_matkul)
+                </td>
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.dosen_pengampu)
+                </td>
+                <td style="text-align: center;">
+                    @if (item.status == 1)
+                    {
+                        <span class="badge bg-primary">Aktif</span>
+                    }
+                </td>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("Detail", "Matkul", new { id = item.id_matkul })" class="badge bg-info" data-toggle="tooltip" data-placement="top" title="Detail Data">Detail</a>
+                    <a href="@Url.Action("Update", "Matkul", new { id = item.id_matkul })" class="badge bg-warning" data-toggle="tooltip" data-placement="top" title="Edit Data">Ubah</a>
+                    <a href="@Url.Action("Delete", "Matkul", new { id = item.id_matkul })" id="tombol-hapus" class="badge bg-danger" data-toggle="tooltip" data-placement="top" title="Hapus Data">
+                        Hapus
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

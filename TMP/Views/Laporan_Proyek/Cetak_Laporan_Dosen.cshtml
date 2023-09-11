@@ -1,0 +1,119 @@
+﻿@model IEnumerable<TMP.Models.Laporan_Proyek_Model>
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Cetak_Laporan_Dosen";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+    int no = 0;
+}
+
+<div class="container-fluid py-4">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <body style="padding: 0 20;">
+        <div>
+            <section class="content">
+                <div class="row invoice-info">
+                    <div class="col-auto">
+                        <img src="~/Content/assets/img/logos/logo.png">
+                        <h4>&nbsp;&nbsp;Tilasula Monitoring Project</h4>
+                        <address>
+                            &nbsp;&nbsp;M42X+FQ4, Cibatu,<br>
+                            &nbsp;&nbsp;Cikarang Sel., Kabupaten Bekasi,<br>
+                            &nbsp;&nbsp;Jawa Barat 17530
+                        </address>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">
+                                        No
+                                    </th>
+                                    <th style="text-align: center;">
+                                        Nama Proyek
+                                    </th>
+                                    <th style="text-align: center;">
+                                        Dosen Pengampu
+                                    </th>
+                                    <th style="text-align: center;">
+                                        Progress Proyek Keseluruhan
+                                    </th>
+                                    <th style="text-align: center;">
+                                        Deadline
+                                    </th>
+                                    <th style="text-align: center;">
+                                        Nama Kegiatan Spesifik
+                                    </th>
+                                    <th style="text-align: center;">
+                                        Identifikasi Permasalahan
+                                    </th>
+                                    <th style="text-align: center;">
+                                        Tindakan Pembenaran
+                                    </th>
+                                    <th style="text-align: center;">
+                                        Status
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            @(no += 1)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.nama_proyek)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.pic)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.progress)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.target)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.nama_kegiatan)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @Html.Raw(item.problem_identification)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @Html.Raw(item.corrective_action)
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @if (item.status == 1)
+                                            {
+                                                <span>Belum Melampirkan Bukti</span>
+                                            }
+                                            else if (item.status == 2)
+                                            {
+                                                <span>Menunggu Persetujuan</span>
+                                            }
+                                            else if (item.status == 3)
+                                            {
+                                                <span>Selesai</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+            </section>
+        </div>
+    </body>
+    <script>
+        window.print();
+    </script>
+</div>
+
+

@@ -1,0 +1,88 @@
+﻿@model TMP.Models.Detail_ProyekModel
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+}
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+    int no = 0;
+
+    Detail_Proyek _detail = new Detail_Proyek();
+    Transaksi_Acc_Step _trans = new Transaksi_Acc_Step();
+    IList<Detail_ProyekModel> details = _detail.getAllDataDetail(Model.id_proyek);
+    float count = _trans.getCountProgress(Model.id_proyek);
+    float temp_success = _trans.getSuccessStatus(Model.id_proyek);
+    float success = temp_success + 1;
+
+    float temp_calculate = ((success / count) * 100);
+    int calculate = ((int)temp_calculate);
+
+}
+
+<div class="row justify-content-between align-items-center">
+    <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif; text-transform: uppercase;">DETAIL PROGRESS PROYEK | @Html.DisplayFor(model => model.nama_proyek)</h5>
+
+    <div class="col-auto">
+        <div class="text-lg-end my-1 my-lg-0">
+            <a href="@Url.Action("Index", "Transaksi_Acc_Step")">
+                <i class="fa fa-chevron-circle-left"></i> Kembali
+            </a>
+        </div>
+    </div>
+</div> <!-- end row --><hr>
+<table id="datatable" class="table datatable table-hover" style="font-size: 15px;">
+    <thead class="table-light">
+        <th style="text-align: center;">No</th>
+        <th style="text-align: center;">Nama Kegiatan</th>
+        <th style="text-align: center;">Status</th>
+        <th style="text-align: center;">Aksi</th>
+    </thead>
+
+    <tbody>
+        @foreach (var item in details)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @(no += 1)
+                </td>
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.nama_kegiatan)
+                </td>
+                <td style="text-align: center;">
+                    @if (item.status == 2)
+                    {
+                        <span class="badge bg-info">Menunggu Persetujuan Dosen/Instruktur</span>
+                    }
+                    else if (item.status == 3)
+                    {
+                        <span class="badge bg-success">Telah Disetujui</span>
+                    }
+                    else if (item.status == 1)
+                    {
+                        <span class="badge bg-primary">Menunggu Pengajuan Progress</span>
+                    }
+                </td>
+                <td style="text-align: center;">
+                    @if (item.status == 2)
+                    {
+                        using (Html.BeginForm("ACC_Step", "Transaksi_Acc_Step", FormMethod.Post))
+                        {
+                            <input type="hidden" value="@item.id_detail" class="form-control" id="id_detail" name="id_detail">
+                            <input type="hidden" value="@item.id_proyek" class="form-control" id="id_proyek" name="id_proyek">
+                            <input type="hidden" value="@calculate" class="form-control" id="progress" name="progress">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="badge bg-primary" data-toggle="tooltip" data-placement="top" title="Terima">
+                                Terima
+                            </button>
+                        }
+                    }
+                    <a href="@Url.Action("Lihat_Progress", "Transaksi_Acc_Step", new { id = item.id_detail }, null)" class="badge bg-info" data-toggle="tooltip" data-placement="top" title="Lihat Progress">Lihat Progress</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

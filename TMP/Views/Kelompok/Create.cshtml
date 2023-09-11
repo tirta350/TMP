@@ -1,0 +1,146 @@
+﻿@model TMP.Models.UserKelompokModel
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_DashboardMahasiswa.cshtml";
+
+    int no = 0;
+    int no1 = 0;
+    KelompokModel _kel = new KelompokModel();
+
+}
+
+<h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">TAMBAH DATA KELOMPOK</h5>
+
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <div class="text-lg-end my-1 my-lg-0">
+            <a href="@Url.Action("Index", "Kelompok")">
+                <i class="fa fa-chevron-circle-left"></i> Kembali
+            </a>
+        </div>
+    </div>
+
+    <div class="col-auto">
+
+    </div><!-- end col-->
+</div> <!-- end row --><hr>
+
+<div class="form-horizontal">
+    <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">FORM TAMBAH ANGGOTA KELOMPOK</h5>
+    <table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 15px;">
+        <thead>
+            <tr>
+                <th style="width:8%; text-align: center;">
+                    <strong>@Html.DisplayName("No")</strong>
+                </th>
+                <th style="text-align: center;">
+                    <strong>Nama Mahasiswa</strong>
+                </th>
+                <th style="text-align: center;"><strong>Aksi</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int i = 0;}
+            @foreach (var item in Model.listuser)
+            {
+                i++;
+                <tr>
+                    <td>
+                        <div style="text-align: center;">
+                            @i
+                        </div>
+                    </td>
+                    <td>
+                        <div style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.nama_user)
+                        </div>
+                    </td>
+                    <td>
+                        <div style="text-align: center;">
+                            @using (Html.BeginForm())
+                            {
+                                <input type="hidden" value="@item.id_user" class="form-control" id="nim" name="nim">
+                                <input type="hidden" value="@item.nama_user" class="form-control" id="nama" name="nama">
+
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="badge bg-primary" data-toggle="tooltip" data-placement="top" title="Tambah Anggota Kelompok">
+                                    Tambah
+                                </button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+
+    @using (Html.BeginForm("Save", "Kelompok", FormMethod.Post))
+    {
+
+        @Html.AntiForgeryToken()
+
+        <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">LIST ANGGOTA KELOMPOK</h5>
+        <table id="datatable" class="table datatable table-hover" style="font-size: 15px;">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <strong>No</strong>
+                    </th>
+                    <th class="text-center">
+                        <strong>NIM</strong>
+                    </th>
+                    <th class="text-center">
+                        <strong>Nama Mahasiswa</strong>
+                    </th>
+                    <th class="text-center">
+                        <strong>Aksi</strong>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (TempData["cart"] != null)
+                {
+                    foreach (var item in TempData["cart"] as List<MPBL.Models.cart>)
+                    {
+                        <tr>
+                            <td style="text-align: center;">
+                                @(no1 += 1)
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.nim)
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.nama)
+                            </td>
+                            <td style="text-align: center;">
+                                <a href="@Url.Action("Clear_Cart", "Kelompok", new { id=item.nim })" class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Hapus Data"
+                                   onclick="return confirm('Apakah anda ingin menghapus data ini?')">
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <br />
+
+        <div class="form-group col-8">
+            <label class="col-form-label">Nama Kelompok<span style="color: red">*</span></label>
+            <div class="input-group mb-3">
+                @Html.EditorFor(model => _kel.nama_kel, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+            </div>
+            @Html.ValidationMessageFor(model => _kel.nama_kel, "", new { @class = "text-danger" })
+        </div>
+        <input type="hidden" value="1" name="id" id="id" />
+        <input type="submit" style="float:right" value="Simpan" class="btn btn-primary rounded-pill waves-effect waves-light" onclick="return confirm('Apakah anda ingin menambah data ini?')" />
+    }
+
+</div>
+
+
+
+
+

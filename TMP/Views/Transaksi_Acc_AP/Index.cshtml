@@ -1,0 +1,70 @@
+﻿@model IEnumerable<TMP.Models.ProyekModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+    int no = 0;
+}
+
+<h4 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">KONFIRMASI ACTIVITY PLAN</h4>
+<hr />
+
+<table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 15px;">
+    <thead>
+        <tr>
+            <th style="width:8%; text-align: center;">
+                <strong>@Html.DisplayName("No")</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayNameFor(model => model.nama_proyek)</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayNameFor(model => model.semester)</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayNameFor(model => model.status)</strong>
+            </th>
+            <th style="text-align: center;">
+            <strong>Aksi</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @(no += 1)
+                </td>
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.nama_proyek)
+                </td>
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.semester)
+                </td>
+                <td>
+                    @if (item.status == 2)
+                    {
+                        <span class="badge bg-info">Menunggu Persetujuan Dosen/Instruktur</span>
+                    }
+                    else if (item.status == 3)
+                    {
+                        <span class="badge bg-success">Telah Disetujui</span>
+                    }
+                    else if (item.status == 1)
+                    {
+                        <span class="badge bg-primary">Menunggu Pengajuan Activity Plan oleh Mahasiswa</span>
+                    }
+                </td>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("ACC_AP", "Transaksi_Acc_AP", new { id = item.id_proyek })" class="badge bg-success" data-toggle="tooltip" data-placement="top" title="Konfirmasi Terima" onclick="return confirm('Apakah anda ingin menerima data Proyek ini?')">
+                        Terima
+                    </a>
+                    <a href="@Url.Action("Tolak_AP", "Transaksi_Acc_AP", new { id = item.id_proyek })" class="badge bg-danger" data-toggle="tooltip" data-placement="top" title="Tolak Activity Plan" onclick="return confirm('Apakah anda ingin menghapus data Proyek ini?')">
+                        Tolak
+                    </a>
+                    <a href="@Url.Action("Detail", "Transaksi_Acc_AP", new { id = item.id_proyek })" class="badge bg-info" data-toggle="tooltip" data-placement="top" title="Detail Data">Detail</a>
+                </td>
+            </tr>
+        }
+    <tbody>
+</table>

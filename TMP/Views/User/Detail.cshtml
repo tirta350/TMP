@@ -1,0 +1,113 @@
+﻿@model TMP.Models.UserModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_DashboardAdmin.cshtml";
+}
+
+<div class="card-body pt-0 p-0">
+
+    <h4 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif; text-transform: uppercase;"> DETAIL USER | @Html.DisplayFor(model => model.nama_user)</h4>
+
+    <a href="@Url.Action("Index", "User")">
+        <i class="fa fa-chevron-circle-left"></i> Kembali
+    </a>
+    <hr />
+
+    <ul class="list-group">
+        <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+
+
+            <div class="col-md-6">
+                @*<h4 class="text-dark font-weight-bold ms-sm-2">@Html.DisplayFor(model => model.nama_proyek)</h4>*@
+
+                <div class="row">
+                    <div class="col-md-3">
+                        @Html.Label("Role", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    </div>
+                    <div class="col-sm-6">
+                        :
+                        @{
+                            string role = Model.role;
+                            string badgeClass = "badge ";
+
+                            if (role == "Admin")
+                            {
+                                badgeClass += "bg-info";
+                            }
+                            else if (role == "Mahasiswa")
+                            {
+                                badgeClass += "bg-primary";
+                            }
+                            else if (role == "Dosen")
+                            {
+                                badgeClass += "bg-success";
+                            }
+                            else
+                            {
+                                badgeClass += "bg-info";
+                            }
+                        }
+                        <span class="@badgeClass" style="font-size: 14px;">
+                            @Html.DisplayFor(model => model.role, new { htmlAttributes = new { @class = "control-label" } })
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        @Html.Label("Username", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    </div>
+                    <div class="col-md-6">
+                        : @Html.DisplayFor(model => model.username, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        @Html.Label("Email", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    </div>
+                    <div class="col-md-6">
+                        : @Html.DisplayFor(model => model.email, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.Label("Jenis Kelamin", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    </div>
+                    <div class="col-md-3">
+                        : @Html.DisplayFor(model => model.jenis_kelamin, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.Label("Nomor Telepon", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    </div>
+                    <div class="col-md-4">
+                        : +62 - @Html.DisplayFor(model => model.nomor_tlp, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.Label("Alamat", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    </div>
+                    <div class="col-md-8">
+                        : @Html.DisplayFor(model => model.alamat, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+                    </div>
+                </div>
+
+            </div>
+        </li>
+
+
+    </ul>
+</div>
+

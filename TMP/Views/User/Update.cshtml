@@ -1,0 +1,139 @@
+﻿@model TMP.Models.UserModel
+
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_DashboardAdmin.cshtml";
+
+    IList<SelectListItem> roles = new List<SelectListItem>
+{
+new SelectListItem { Value = null, Text = "Pilih Role" },
+new SelectListItem { Value = "Admin", Text = "Admin" },
+new SelectListItem { Value = "Dosen", Text = "Dosen" },
+new SelectListItem { Value = "Mahasiswa", Text = "Mahasiswa" }
+};
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">UBAH DATA USER</h5>
+
+    <a href="@Url.Action("Index", "User")">
+        <i class="fa fa-chevron-circle-left"></i> Kembali
+    </a>
+
+    <div class="card-body">
+        <h5 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">Informasi User</h5>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label" for="username">Username<span style="color: red">*</span></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label" for="username">Password<span style="color: red">*</span></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                        
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                const togglePassword = document.querySelector("#togglePassword");
+                const password = document.querySelector("#password");
+
+                togglePassword.addEventListener("click", function () {
+                    // toggle the type attribute
+                    const type = password.getAttribute("type") === "password" ? "text" : "password";
+                    password.setAttribute("type", type);
+
+                    // toggle the icon
+                    this.classList.toggle("bi-eye");
+                });
+
+                // prevent form submit
+                //const form = document.querySelector("form");
+                //form.addEventListener('submit', function (e) {
+                //    e.preventDefault();
+                //});
+            </script>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label" for="nama_user">Nama Lengkap<span style="color: red">*</span></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.nama_user, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.nama_user, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label" for="email">Email<span style="color: red">*</span></label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label" for="jenis_kelamin">Jenis Kelamin<span style="color: red">*</span></label>
+                    <div class="col-md-8">
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(model => model.jenis_kelamin, "laki-Laki", new { @class = "form-check-input" })
+                            <label class="form-check-label">Laki-Laki</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(model => model.jenis_kelamin, "Perempuan", new { @class = "form-check-input" })
+                            <label class="form-check-label">Perempuan</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label" for="role">Role<span style="color: red">*</span></label>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.role, new SelectList(roles, "Value", "Text"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.role, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="horizontal dark">
+        <h5 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">Informasi Kontak</h5>
+        <div class="row">
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="firstname">
+                    No Telepon<span style="color: red">*</span>
+                    <br>
+                    <span style="font-size: 12px; font-weight: normal; ">format (mulai dari angka kedua awal nomor telepon)</span>
+                </label>
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.nomor_tlp, new { htmlAttributes = new { @class = "form-control", type = "number", onKeyPress = "if(this.value.length==13) return false;" } })
+                    @Html.ValidationMessageFor(model => model.nomor_tlp, "", new { @class = "text-danger" }))
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" for="alamat">Alamat<span style="color: red">*</span></label>
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.alamat, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.alamat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-offset-0 col-md-0">
+                <input onclick="return confirm('Apakah anda ingin menambah data ini?')" type="submit" style="float:right" value="Simpan" class="btn btn-primary rounded-pill waves-effect waves-light" />
+            </div>
+        </div>
+    </div>
+
+}

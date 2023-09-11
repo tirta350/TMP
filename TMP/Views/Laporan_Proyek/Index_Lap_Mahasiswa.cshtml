@@ -1,0 +1,114 @@
+﻿@model IEnumerable<TMP.Models.ProyekModel>
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Index_Lap_Mahasiswa";
+    Layout = "~/Views/Shared/_DashboardMahasiswa.cshtml";
+    UserModel user = (UserModel)Session["user"];
+    string namaUser = user.nama_user;
+
+    int no = 0;
+}
+
+<h4 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">LAPORAN PROYEK</h4>
+
+<div class="form-group row">
+    <div class="col-12 text-center">
+        <!-- Tambahkan class "text-center" untuk membuat teks menjadi tengah -->
+        <label class="col-form-label" style="font-size: 18px;">Filter Berdasarkan Tanggal</label>
+    </div>
+</div>
+
+<!-- Tambahkan elemen untuk filter tanggal awal dan akhir -->
+<div class="form-group row">
+    <div class="form-group col-6">
+        <label class="col-form-label">Tanggal Awal<span style="color: red">*</span></label>
+        <div class="input-group mb-2">
+            <input type="date" class="form-control" id="tanggalAwalLaporan">
+        </div>
+    </div>
+    <div class="form-group col-6">
+        <label class="col-form-label">Tanggal Akhir<span style="color: red">*</span></label>
+        <div class="input-group mb-2">
+            <input type="date" class="form-control" id="tanggalAkhirLaporan">
+        </div>
+    </div>
+</div>
+
+<!-- Tambahkan tombol untuk filter dan cetak laporan -->
+<div class="form-group row">
+    <div class="col-12">
+        <button class="btn btn-primary" onclick="filterAndPrint()">Filter dan Cetak</button>
+    </div>
+</div>
+
+<script>
+    // Function to get the value of namaUser from the UserModel in the session
+    function getNamaUserFromSession() {
+        var namaUser = "@(namaUser)"; // Use C# Razor syntax to get the value from the UserModel in the session
+        return namaUser;
+        }
+
+        function filterAndPrint() {
+           // Ambil nilai tanggal awal dan tanggal akhir dari filter
+        var tanggalAwal = document.getElementById("tanggalAwalLaporan").value;
+        var tanggalAkhir = document.getElementById("tanggalAkhirLaporan").value;
+
+        // Dapatkan nilai namaUser dari session
+        var namaUser = getNamaUserFromSession();
+
+        // Periksa apakah tanggalAwal atau tanggalAkhir kosong
+        if (tanggalAwal === "" || tanggalAkhir === "") {
+            alert("Tanggal awal dan tanggal akhir harus diisi.");
+        } else {
+            // Redirect ke URL dengan nilai tanggal dan namaUser sebagai parameter query
+            var url = "@Url.Action("Cetak_Laporan_Mahasiswa", "Laporan_Proyek")" + "?tanggalAwal=" + tanggalAwal + "&tanggalAkhir=" + tanggalAkhir + "&namaUser=" + encodeURIComponent(namaUser); // Encode the parameter value to handle special characters
+            window.open(url, "_blank"); // Open the URL in a new tab
+        }
+    }
+</script>
+
+<table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size:small;">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                Proyek
+            </th>
+            <th>
+                Dosen Pengampu
+            </th>
+            <th>
+                Kemajuan
+            </th>
+            <th>
+                Tenggat
+            </th>
+        </tr>
+    <thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(no += 1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nama_proyek)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.progress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.target)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

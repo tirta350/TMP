@@ -1,0 +1,73 @@
+﻿@model IEnumerable<TMP.Models.ProyekModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+    int no = 0;
+}
+
+<h4 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">KONFIRMASI PROGRESS PROYEK</h4>
+<br />
+
+<table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 15px;">
+    <thead>
+        <tr>
+            <th style="width:8%; text-align: center;">
+                <strong>@Html.DisplayName("No")</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayNameFor(model => model.nama_proyek) </strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>@Html.DisplayNameFor(model => model.semester) </strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>Status </strong>
+            </th>
+            <th style="text-align: center;">
+                <strong> Aksi</strong>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div style="text-align: center;">
+                        @(no += 1)
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.nama_proyek)
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.semester)
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex px-2 py-1">
+                        @if (item.status == 2)
+                        {
+                            <span class="badge bg-info">Menunggu Persetujuan Dosen/Instruktur</span>
+                        }
+                        else if (item.status == 3)
+                        {
+                            <span class="badge bg-success">Telah Disetujui</span>
+                        }
+                        else if (item.status == 1)
+                        {
+                            <span class="badge bg-primary">Menunggu Pengajuan Activity Plan oleh Mahasiswa</span>
+                        }
+                    </div>
+                </td>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("Detail", "Transaksi_Acc_Step", new { id = item.id_proyek })" class="badge bg-info" data-toggle="tooltip" data-placement="top" title="Detail Data">Detail</a>
+                </td>
+            </tr>
+        }
+    <tbody>
+</table>

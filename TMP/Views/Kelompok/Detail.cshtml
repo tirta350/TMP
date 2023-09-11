@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TMP.Models.Detail_KelompokModel>
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_DashboardMahasiswa.cshtml";
+    int no = 0;
+}
+
+<h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;"> DATA ANGGOTA KELOMPOK</h5>
+
+<a href="@Url.Action("Index", "Kelompok")" style="font-family: Arial;">
+    <i class="fa fa-chevron-circle-left"></i> Kembali
+</a>
+<br />
+<br />
+<table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 17px; font-family: 'sans-serif', Arial, sans-serif;">
+    <thead>
+        <tr>
+            <th style="width:8%; text-align: center;">
+                <strong>@Html.DisplayName("No")</strong>
+            </th>
+            <th class="text-center">
+                <strong>@Html.DisplayName("NIM")</strong>
+            </th>
+            <th class="text-center">
+                <strong>@Html.DisplayName("Nama Anggota")</strong>
+            </th>
+            
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div style="text-align: center;">
+                        @(no += 1)
+                    </div>
+                </td>
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.id_user)
+                </td>
+
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.nama_anggota)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

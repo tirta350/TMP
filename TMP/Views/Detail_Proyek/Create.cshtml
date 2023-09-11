@@ -1,0 +1,123 @@
+﻿@model TMP.Models.Detail_ProyekModel
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_DashboardMahasiswa.cshtml";
+    int no = 0;
+    Detail_Proyek _proyek = new Detail_Proyek();
+    UserModel user = (UserModel)Session["user"];
+    IList<ProyekModel> proyek = _proyek.getAllData1(user);
+}
+
+<div class="form-horizontal">
+
+    <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">TAMBAH DATA KEGIATAN</h5>
+
+    <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+            <div class="col-auto">
+                <a href="@Url.Action("Index", "Detail_Proyek")" style="font-family: Arial;">
+                    <i class="fa fa-chevron-circle-left"></i> Kembali
+                </a>
+            </div>
+        </div>
+
+        <div class="col-auto">
+
+        </div><!-- end col-->
+    </div> <!-- end row --><hr>
+
+    @using (Html.BeginForm())
+    {
+        <!-- ///////////////// -->
+        <div class="row">
+            <label class="col-form-label" for="firstname">Nama Kegiatan<span style="color: red">*</span></label>
+            <div class="col-lg-6">
+                @Html.EditorFor(model => model.nama_kegiatan, new { htmlAttributes = new { @class = "form-control mb-3", @required = "Nama Kegiatan" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.nama_kegiatan, "", new { @class = "text-danger" })
+
+            @Html.AntiForgeryToken()
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-blue mr--3"><i class="fa fa-save"></i>&nbsp;Tambah</button><br><br>
+                </div>
+            </div>
+        </div>
+    }
+
+    @*<div class="perhitungan">
+            <div class="row">
+                <label for="firstname">Nama Mahasiswa</label>
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <input readonly type="text" class="form-control mb-3" name="name" id="nama_user" placeholder="Nama Mahasiswa.." value="@rest">
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-blue mr--3"><i class="fa fa-save"></i>&nbsp;Tambah</button><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+
+    @using (Html.BeginForm("Save", "Detail_Proyek", FormMethod.Post))
+    {
+
+        @Html.AntiForgeryToken()
+
+        <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">LIST KEGIATAN</h5>
+        <table id="datatable" class="table datatable table-hover" style="font-size: 15px;">
+            <thead>
+                <tr>
+                    <th style="width:8%; text-align: center;">
+                        <strong>@Html.DisplayName("No")</strong>
+                    </th>
+                    <th style="text-align: center;">
+                        <strong>@Html.DisplayName("Nama Kagiatan")</strong>
+                    </th>
+                    <th style="text-align: center;">
+                        <strong>Aksi</strong>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (TempData["cart"] != null)
+                {
+                    foreach (var item in TempData["cart"] as List<MPBL.Models.cart>)
+                    {
+                        <tr>
+                            <td style="text-align: center;">
+                                @(no += 1)
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.nama_kegiatan)
+                            </td>
+                            <td style="text-align: center;">
+                                <a href="@Url.Action("Clear_Cart", "Detail_Proyek", new { id=item.nama_kegiatan})" class="fa fa-trash" style="width:inherit; height:inherit;" data-toggle="tooltip" data-placement="top" title="Hapus Data"
+                                   onclick="return confirm('Apakah anda ingin menghapus data ini?')">
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <br />
+
+        <div class="form-group">
+            <label class="col-form-label" for="proyek">Proyek<span style="color: red">*</span></label>
+            <div class="input-group mb-3">
+                @Html.DropDownListFor(model => model.id_proyek, new SelectList(proyek, "id_proyek", "nama_proyek"), "Pilih Proyek", new { @class = "form-select mb-3", @required = "required" })
+            </div>
+            @Html.ValidationMessageFor(model => model.id_proyek, "", new { @class = "text-danger" })
+        </div>
+        <input type="hidden" value="1" name="id" id="id" />
+        <input type="submit" style="float:right" value="Simpan" class="btn btn-primary rounded-pill waves-effect waves-light" />
+    }
+
+</div>

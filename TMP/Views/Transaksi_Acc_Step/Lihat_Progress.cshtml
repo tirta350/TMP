@@ -1,0 +1,151 @@
+﻿@model TMP.Models.Detail_ProyekModel
+
+@{
+    ViewBag.Title = "Lihat_Progress";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+}
+
+<h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif; text-transform: uppercase;">KONFIRMASI PROGRESS | @Html.DisplayFor(model => model.nama_proyek)</h5>
+
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <div class="text-lg-end my-1 my-lg-0">
+            <a href="@Url.Action("Index", "Transaksi_Acc_Step")">
+                <i class="fa fa-chevron-circle-left"></i> Kembali
+            </a>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group" hidden>
+        @Html.LabelFor(model => model.id_detail, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.id_detail, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.id_detail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group" hidden>
+        @Html.LabelFor(model => model.id_proyek, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.id_proyek, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.id_proyek, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Label("Nama Kegiatan", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+        </div>
+        <div class="col-md-10">
+            : @Html.DisplayFor(model => model.nama_kegiatan, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Label("Tenggat", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+        </div>
+        <div class="col-md-10">
+            : @Html.DisplayFor(model => model.target, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Label("Komentar", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+        </div>
+        <div class="col-md-10">
+            :
+        </div>
+        <div>
+            <textarea class="ckeditor" id="komentar" name="komentar">@Model.komentar</textarea>
+        </div>
+    </div>
+    <br />
+
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-2">
+                @Html.Label("Dokumen", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+            </div>
+
+            <div >
+                @if (Model.tahap != "")
+                {
+                    <a href="@Url.Action("DownloadFile", "Transaksi_Upload_Progress", new { tahap = Model.tahap })" class="btn btn-secondary " data-toggle="tooltip" data-placement="top" title="Download"><i class="fa fa-cloud-download" style="font-size: 10px;"></i> Download</a>
+
+                }
+                else
+                {
+                    <label class="control-label">Belum Melampirkan File Bukti</label>
+                }
+            </div>
+        </div>
+       
+    </div>
+
+        <div class="col-xl-12 col-sm mb-xl-0">
+            <div>
+                <div class="col-md-4">
+                    @Html.Label("Problem Identification", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" }) :
+                </div>
+
+            </div>
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <p class="text-muted mb-2">
+                                @Html.Raw(Model.problem_identification)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <br />
+        <div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
+            <div>
+                <div class="col-md-2">
+                    @Html.Label("Corrective Action", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })   :
+                </div>
+
+            </div>
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <p class="text-muted mb-2">
+                                @Html.Raw(Model.corrective_action)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" hidden>
+                @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.status, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <input type="submit" value="Ubah" class="btn btn-primary" style="float:right" data-toggle="tooltip" data-placement="top" title="Ubah Data" />
+                </div>
+            </div>
+        </div>
+    </div>
+    }

@@ -1,0 +1,172 @@
+﻿@model TMP.Models.Detail_ProyekModel
+
+@{
+    ViewBag.Title = "Upload_Progress";
+    Layout = "~/Views/Shared/_DashboardMahasiswa.cshtml";
+    string kosong = "kosong !!!";
+    var Now = DateTime.Now;
+}
+
+<h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif; text-transform: uppercase;">UPLOAD PROGRESS | @Html.DisplayFor(model => model.nama_proyek)</h5>
+
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <div class="text-lg-end my-1 my-lg-0">
+            <a href="@Url.Action("Index", "Transaksi_Upload_Progress")">
+                <i class="fa fa-chevron-circle-left"></i> Kembali
+            </a>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("Upload_Progress", "Transaksi_Upload_Progress", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="card-body">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group" hidden>
+        @Html.LabelFor(model => model.id_detail, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.id_detail, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.id_detail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group" hidden>
+        @Html.LabelFor(model => model.id_proyek, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.id_proyek, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.id_proyek, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Label("Nama Kegiatan", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+        </div>
+        <div class="col-md-10">
+            : @Html.DisplayFor(model => model.nama_kegiatan, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Label("Tenggat", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+        </div>
+        <div class="col-md-10">
+            : @Html.DisplayFor(model => model.target, new { htmlAttributes = new { @class = "control-label", style = "font-size: 14px;" } })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Label("Komentar", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+        </div>
+        <div class="col-md-10">
+            :
+        </div>
+    </div>
+
+    <div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-1">
+                <p class="text-muted mb-2">
+                    @Html.Raw(Model.komentar)
+                </p>
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <div class="row">
+                <div class="form-group">
+                    @Html.Label("Dokumen", htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                    <div class="col-md-10">
+                        @if (Model.tahap != "")
+                        {
+                            <a href="@Url.Action("DownloadFile", "Transaksi_Upload_Progress", new { tahap = Model.tahap })" class="btn btn-secondary " data-toggle="tooltip" data-placement="top" title="Download" style="font-size: 15px;"><i class="fa fa-eye"></i> Lihat Bukti Dokumen</a>
+
+                        }
+                        else if (Model.tahap != "" && (Now <= Convert.ToDateTime(Model.target)))
+                        {
+
+                            <label class="control-label" , style="font-size: 13px;">Tidak Pernah Mengumpulkan</label>
+                        }
+                        else
+                        {
+                            <label class="control-label" , style="font-size: 13px;">Belum Melampirkan File Bukti</label>
+                        }
+
+
+                    </div>
+                </div>
+
+
+                
+
+                @if (Model.status != 3 && (Now <= Convert.ToDateTime(Model.target)))
+                {
+                    <div class="form-group">
+                        @Html.Label("*File Maximal 10 MB dan berekstensi pdf", htmlAttributes: new { @class = "control-label col-md-5 text-danger" })
+                        <div class="col-md-10">
+                            <input type="file" name="UploadFileOSP">
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                }
+
+
+
+
+                @if (Model.status == 3)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.problem_identification, htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                        <div class="col-md-10">
+                            <textarea class="ckeditor" id="problem_identification" name="problem_identification">@Model.problem_identification</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.corrective_action, htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                        <div class="col-md-10">
+                            <textarea class="ckeditor" id="corrective_action" name="corrective_action">@Model.corrective_action</textarea>
+                        </div>
+                    </div>
+                }
+                else if (Now <= Convert.ToDateTime(Model.target))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.problem_identification, htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                        <div class="col-md-10">
+                            <textarea class="ckeditor" id="problem_identification" name="problem_identification">@Model.problem_identification</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.LabelFor(model => model.corrective_action, htmlAttributes: new { @class = "control-label", style = "font-size: 15px;" })
+                            <textarea class="ckeditor" id="corrective_action" name="corrective_action">@Model.corrective_action</textarea>
+                        </div>
+                    </div>
+                }
+                <div class="form-group" hidden>
+                    @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.status, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @if (Model.status != 3 && (Now <= Convert.ToDateTime(Model.target)))
+                {
+                    <div class="form-group">
+                        <div class="col-md-offset-0 col-md-0">
+                            <input type="submit" style="float:right" value="Simpan" data-toggle="tooltip" data-placement="top" title="Simpan Data"
+                                   class="btn btn-primary rounded-pill waves-effect waves-light" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+}

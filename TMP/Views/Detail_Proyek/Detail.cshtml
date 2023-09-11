@@ -1,0 +1,58 @@
+﻿@model TMP.Models.Detail_ProyekModel
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_DashboardMahasiswa.cshtml";
+    int no = 0;
+
+    Detail_Proyek _detail = new Detail_Proyek();
+    IList<Detail_ProyekModel> details = _detail.getAllDataDetail(Model.id_proyek);
+}
+
+<h5 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">DETAIL ACTIVITY PLAN</h5>
+
+<div class="col-auto">
+    <a href="@Url.Action("Index", "Detail_Proyek")" style="font-family: Arial;">
+        <i class="fa fa-chevron-circle-left"></i> Kembali
+    </a>
+</div>
+
+<div class="text-lg-end my-0 my-lg-0">
+    <a class="btn btn-danger rounded-pill waves-effect waves-light" href="@Url.Action("Delete", "Detail_Proyek", new { id = Model.id_proyek} )" onclick="return confirm(Yakin ingin membatalkan pengajuan activity plan ini?')">
+        Batal Upload<span class="btn-label-left"></span>
+    </a>
+</div><!-- end col-->
+
+<table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 17px; font-family: 'sans-serif', Arial, sans-serif;">
+    <thead>
+        <tr>
+            <th style="width:8%; text-align: center;">
+                <strong>@Html.DisplayName("No")</strong>
+            </th>
+            <th class="text-center">
+                <strong>@Html.DisplayName("Nama Kegiatan")</strong>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in details)
+        {
+            <tr>
+                <td>
+                    <div style="text-align: center;">
+                        @(no += 1)
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.nama_kegiatan)
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

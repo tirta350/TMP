@@ -1,0 +1,100 @@
+﻿@model List<TMP.Models.ChartModel>
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Dashboard Dosen";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+    Dashboard_Admin dashboard_Admin = new Dashboard_Admin();
+    UserModel user = (UserModel)Session["user"];
+    IList<Dashboard_AdminModel> dashboard_Admins = dashboard_Admin.getDataTahunDosen(user);
+    Dashboard_AdminModel dash = new Dashboard_AdminModel();
+}
+
+<h4 class="text-left bg-light p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">DASHBOARD</h4>
+<div class="container">
+    <div class="row p-2 mt-0 mb-3">
+        <div class="col">
+            <div class="card-body bg-gray-100">
+                <h5 class="card-title" style="color: blue;">Jumlah Proyek</h5>
+                <h1 class="align-self-center mb-0" style="line-height: 1; color: blue;">@ViewBag.TotalProjects</h1>
+                <br />
+                <div class="d-flex align-items-center mb-2">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color: blue;">
+                        <i class="ni ni-check-bold"></i>
+                    </div>
+                    <div class="ps-3">
+                        <a href="@Url.Action("EntireProjectLecturer", "Dashboard")" class="small-box-footer" style="color: blue;">More info <i class="bi bi-arrow-right-circle" style="color: blue;"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card-body bg-gray-100">
+                <h5 class="card-title" style="color: green;">Proyek Berjalan</h5>
+                <h1 class="align-self-center mb-0" style="line-height: 1; color: green;">@ViewBag.OnProgressProjects</h1>
+                <br />
+                <div class="d-flex align-items-center mb-2">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color: green;">
+                        <i class="ni ni-chart-bar-32"></i>
+                    </div>
+                    <div class="ps-3">
+                        <a href="@Url.Action("OnProgressProjectLecturer", "Dashboard")" class="small-box-footer" style="color: green;">More info <i class="bi bi-arrow-right-circle" style="color: green;"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card-body bg-gray-100">
+                <h5 class="card-title" style="color: red;">Proyek Bermasalah</h5>
+                <h1 class="align-self-center mb-0" style="line-height: 1; color: red;">@ViewBag.NeedAttentionProject</h1>
+                <br />
+                <div class="d-flex align-items-center mb-2">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="color: red;">
+                        <i class="ni ni-sound-wave"></i>
+                    </div>
+                    <div class="ps-3">
+                        <a href="@Url.Action("NeedAttentionProjectLecturer", "Dashboard")" class="small-box-footer" style="color: red;">More info <i class="bi bi-arrow-right-circle"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--<div class="form-group row">
+    <div class="form-group col-12">
+        <label class="col-form-label">Filter berdasarkan Tahun</label>
+        <div class="input-group mb-2">
+            @Html.DropDownListFor(model => dash.tahun, new SelectList(dashboard_Admins, "tahun", "tahun"), "Pilih", new { @class = "form-select mb-3", id = "tahun" })
+        </div>
+    </div>
+</div>-->
+
+<div class="form-group row">
+    <div class="col-12">
+        <label class="col-form-label" style="font-size: 18px;">Filter Berdasarkan Tanggal</label>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="form-group col-6">
+        <label class="col-form-label">Tanggal Awal<span style="color: red">*</span></label>
+        <div class="input-group mb-2">
+            <input type="date" class="form-control" id="tanggalAwal">
+        </div>
+    </div>
+    <div class="form-group col-6">
+        <label class="col-form-label">Tanggal Akhir<span style="color: red">*</span></label>
+        <div class="input-group mb-2">
+            <input type="date" class="form-control" id="tanggalAkhir">
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="myChart" style="height:60vh; width:60vw; margin:0 auto;"></canvas>
+

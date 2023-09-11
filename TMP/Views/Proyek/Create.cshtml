@@ -1,0 +1,204 @@
+﻿@model TMP.Models.UserKelompokModel
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+
+    //UserModel user = (UserModel)Session["Nama1"];
+
+    int no = 0;
+    int no1 = 0;
+
+    Kelompok _kel = new Kelompok();
+    IList<KelompokModel> kels = _kel.getAllData();
+
+    IList<SelectListItem> semester = new List<SelectListItem>
+    {
+        new SelectListItem { Value = null, Text = "Pilih Semester" },
+        new SelectListItem { Value = "1", Text = "1" },
+        new SelectListItem { Value = "2", Text = "2" },
+        new SelectListItem { Value = "3", Text = "3" },
+        new SelectListItem { Value = "4", Text = "4" },
+        new SelectListItem { Value = "5", Text = "5" },
+        new SelectListItem { Value = "6", Text = "6" },
+        new SelectListItem { Value = "7", Text = "7" },
+        new SelectListItem { Value = "8", Text = "8" }
+    };
+}
+
+<h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">TAMBAH DATA PROYEK</h5>
+<div class="col-auto">
+    <div class="col-auto">
+        <a href="@Url.Action("Index", "Proyek")" style="font-family: Arial;">
+            <i class="fa fa-chevron-circle-left"></i> Kembali
+        </a>
+    </div>
+</div>
+<hr/>
+
+
+    <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">FORM TAMBAH MATA KULIAH</h5>
+
+    <table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 15px;">
+        <thead>
+            <tr>
+                <th style="width:8%; text-align: center;">
+                    <strong>@Html.DisplayName("No")</strong>
+                </th>
+                <th style="text-align: center;">
+                    <strong>@Html.DisplayName("Nama Mata Kuliah")</strong>
+                </th>
+                <th style="text-align: center;">
+                    <strong>Aksi</strong>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.listmatkul)
+            {
+                <tr>
+                    <td>
+                        <div class="text-center">
+                            @(no += 1)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-center">
+                            @Html.DisplayFor(modelItem => item.nama_matkul)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-center">
+                            @using (Html.BeginForm())
+                            {
+                                <input type="hidden" value="@item.id_matkul" class="form-control" id="id" name="id">
+
+                                @Html.AntiForgeryToken()
+                                <button type="submit"class="badge bg-primary" data-toggle="tooltip" data-placement="top" title="Tambah Anggota Kelompok">
+                                    Tambah
+                                </button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+
+    @using (Html.BeginForm("Save", "Proyek", FormMethod.Post))
+    {
+
+        @Html.AntiForgeryToken()
+
+        <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">LIST MATA KULIAH</h5>
+        <table id="datatable" class="table datatable table-hover" style="font-size: 15px;">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        NO
+                    </th>
+                    <th class="text-center">
+                        Nama
+                    </th>
+                    <th class="text-center">
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (TempData["cart"] != null)
+                {
+                    foreach (var item in TempData["cart"] as List<MPBL.Models.cart>)
+                    {
+                        <tr>
+                            <td style="text-align: center;">
+                                @(no1 += 1)
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.nama)
+                            </td>
+                            <td style="text-align: center;">
+                                <a href="@Url.Action("Clear_Cart", "Proyek", new { id=item.id })" class="fa fa-trash" style="width:inherit; height:inherit;" data-toggle="tooltip" data-placement="top" title="Hapus Data"
+                                   onclick="return confirm('Apakah anda ingin menghapus data ini?')">
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <br />
+
+        <h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">ISI DATA PROYEK</h5>
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Nama Proyek<span style="color: red">*</span></label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.proyek.nama_proyek, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                        @Html.ValidationMessageFor(model => model.proyek.nama_proyek, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="col-form-label">Kelompok<span style="color: red">*</span></label>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.proyek.id_kel, new SelectList(kels, "id_kel", "nama_kel"), "Pilih Kelompok", new { @class = "form-control", @required = "required", @id = "proyek_id_kel" })
+                        @Html.ValidationMessageFor(model => model.proyek.id_kel, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    // Inisialisasi Select2 pada elemen dropdown
+                    $("#proyek_id_kel").select2();
+                });
+            </script>
+
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="col-form-label">Semester<span style="color: red">*</span></label>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.proyek.semester, new SelectList(semester, "Value", "Text"), new { @class = "form-control", @required = "required" })
+                        @Html.ValidationMessageFor(model => model.proyek.semester, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="col-form-label">Tanggal Mulai<span style="color: red">*</span></label>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.proyek.tanggal_mulai, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                        @Html.ValidationMessageFor(model => model.proyek.tanggal_mulai, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="col-form-label">Tanggal Selesai<span style="color: red">*</span></label>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.proyek.target, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                        @Html.ValidationMessageFor(model => model.proyek.target, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+            <input type="hidden" value="1" name="id" id="id" />
+            <input type="submit" style="float:right" value="Simpan" class="btn btn-primary rounded-pill waves-effect waves-light"/>
+            }
+
+
+

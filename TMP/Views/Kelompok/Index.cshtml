@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TMP.Models.KelompokModel>
+
+    @{
+       ViewBag.Title = "Index";
+       Layout = "~/Views/Shared/_DashboardMahasiswa.cshtml";
+
+       int no = 0;
+    }
+
+<h4 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">KELOMPOK</h4>
+
+    <div class="card-header pb-1">
+        <div class="text-lg-end my-1 my-lg-0">
+            @Html.ActionLink("Tambah Data", "Create", null, new { @class = "btn btn-primary  btn-sm", style = "font-size: 17px;; font-family: Arial;" })
+        </div>
+    </div><!-- end col-->
+
+    <table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 15px;">
+        <thead>
+            <tr>
+                <th style="width:8%; text-align: center;">
+                    <strong>@Html.DisplayName("No")</strong>
+                </th>
+                <th style="text-align: center;">
+                    <strong>@Html.DisplayName("Nama Kelompok")</strong>
+                </th>
+                <th style="text-align: center;">
+                    <strong>@Html.DisplayName("Tahun")</strong>
+                </th>
+                <th class="align-middle text-center text-sm"><strong>Aksi</strong></th>
+            </tr>
+        <thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center;">
+                            @(no += 1)
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.nama_kel)
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.tahun)
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                        <a href="@Url.Action("Detail", "Kelompok" , new { id=item.id_kel })" class="badge bg-info" data-toggle="tooltip" data-placement="top" title="Detail Data">Detail</a>
+                        <a href="@Url.Action("Delete", "Kelompok" , new { id=item.id_kel })" id="tombol-hapus" class="badge bg-danger " data-toggle="tooltip" data-placement="top" title="Hapus Data">
+                            Hapus
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

@@ -1,0 +1,103 @@
+﻿@model IEnumerable<TMP.Models.ProyekModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashboardDosen.cshtml";
+    int no = 0;
+}
+
+<h4 class="text-left bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;"> PROYEK </h4>
+
+<div class="card-header pb-0">
+    <div class="text-lg-end my-1 my-lg-0">
+        @Html.ActionLink("Tambah Data", "Create", null, new { @class = "btn btn-primary  btn-sm", style = "font-size: 17px;; font-family: Arial;" })
+    </div>
+</div><!-- end col-->
+
+<table id="basic-datatable" class="table align-items-center mb-0 dataTable no-footer" role="grid" aria-describedby="basic-datatable_info" style="font-size: 15px;">
+    <thead>
+        <tr>
+            <th style="width:8%; text-align: center;">
+                <strong>@Html.DisplayName("No")</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>Nama Proyek</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>Semester</strong>
+            </th>
+            <th style="text-align: center;">
+                <strong>PIC</strong>
+            </th>
+            <th style="text-align: center;">
+                <div class="d-flex flex-column justify-content-center">
+                    <strong>Status</strong>
+                </div>
+            </th>
+            <th style="text-align: center;">
+                <strong>Aksi</strong>
+            </th>
+        </tr>
+    <thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.status == 1 || item.status == 0 || item.status == 2 || item.status == 3)
+            {
+                <tr>
+                    <td>
+                        <div style="text-align: center;">
+                            @(no += 1)
+                        </div>
+                    </td>
+                    <td>
+                        <div style="text-align: center;">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="mb-0 text-sm">@Html.DisplayFor(modelItem => item.nama_proyek)</h6>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="text-align: center;">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="mb-0 text-sm">@Html.DisplayFor(modelItem => item.semester)</h6>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="text-align: center;">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="mb-0 text-sm">@Html.DisplayFor(modelItem => item.pic)</h6>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @if (item.status == 2)
+                        {
+                            <span class="badge bg-info">Menunggu Persetujuan Dosen/Instruktur</span>
+                        }
+                        else if (item.status == 3)
+                        {
+                            <span class="badge bg-success">Telah Disetujui</span>
+                        }
+                        else if (item.status == 1)
+                        {
+                            <span class="badge bg-primary">Menunggu Pengajuan Activity Plan oleh Mahasiswa</span>
+                        }
+
+                        else if (item.status == 0)
+                        {
+                            <span class="badge bg-secondary">Tidak Aktif</span>
+                        }
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                        <a href="@Url.Action("Detail", "Proyek", new { id = item.id_proyek })" class="badge bg-info" data-toggle="tooltip" data-placement="top" title="Detail Data">Detail</a>
+                        <a href="@Url.Action("Delete", "Proyek", new { id = item.id_proyek })" id="tombol-hapus" class="badge bg-danger " data-toggle="tooltip" data-placement="top" title="Hapus Data">
+                            Hapus
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

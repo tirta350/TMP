@@ -1,0 +1,63 @@
+﻿@model TMP.Models.Detail_ProyekModel
+@using TMP.Models
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_DashboardMahasiswa.cshtml";
+    int no = 0;
+
+    Detail_Proyek _detail = new Detail_Proyek();
+    IList<Detail_ProyekModel> details = _detail.getAllDataDetail(Model.id_proyek);
+}
+<h5 class="text-center bg-gray-100 p-2 mt-0 mb-3" style="font-family: 'Ashbury', sans-serif;">DETAIL UPLOAD PROGRESS | @Html.DisplayFor(model => model.nama_proyek)</h5>
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <div class="text-lg-end my-1 my-lg-0">
+            <a href="@Url.Action("Index", "Transaksi_Upload_Progress")">
+                <i class="fa fa-chevron-circle-left"></i> Kembali
+            </a>
+        </div>
+    </div>
+
+    <div class="col-auto">
+
+    </div><!-- end col-->
+</div> <!-- end row --><hr>
+<table class="table" aria-describedby="basic-datatable_info" style="font-size: 15px;">
+    <thead class="table-light">
+    <th style="text-align: center;">No</th>
+    <th style="text-align: center;">Nama Kegiatan</th>
+    <th style="text-align: center;">Status</th>
+    <th style="text-align: center;">Aksi</th>
+    </thead>
+
+    @foreach (var item in details)
+    {
+        <tr>
+            <td style="text-align: center;">
+                @(no += 1)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.nama_kegiatan)
+            </td>
+            <td style="text-align: center;">
+                @if (item.status == 2)
+                {
+                    <span class="badge bg-primary">Menunggu Persetujuan Dosen/Instruktur</span>
+                }
+                else if (item.status == 3)
+                {
+                    <span class="badge bg-info">Telah Disetujui</span>
+                }
+                else if (item.status == 1)
+                {
+                    <span class="badge bg-danger">Menunggu Pengajuan Progress</span>
+                }
+            </td>
+            <td style="text-align: center;">
+                <a href="@Url.Action("Upload_Progress", "Transaksi_Upload_Progress", new { id = item.id_detail }, null)" class="badge bg-primary" data-toggle="tooltip" data-placement="top" title="Progress">Progress</a>
+            </td>
+        </tr>
+    }
+
+</table>
